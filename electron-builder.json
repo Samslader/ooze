@@ -1,0 +1,48 @@
+{
+  "appId": "com.ooze.app",
+  "productName": "Ooze",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "configs/**/*",
+    "zapret/bin/**/*",
+    "zapret/lists/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "zapret",
+      "to": "zapret",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "configs",
+      "to": "configs",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "assets/icon.ico",
+    "requestedExecutionLevel": "requireAdministrator"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "allowElevation": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Ooze"
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "your-username",
+    "repo": "ooze"
+  }
+}

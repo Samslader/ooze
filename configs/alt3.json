@@ -1,0 +1,52 @@
+{
+  "name": "alt3",
+  "displayName": "ALT3 - Advanced Desync",
+  "description": "Advanced desync with hostfakesplit and custom TLS modifications",
+  "rules": [
+    {
+      "filterUdp": "443",
+      "hostlist": "list-general.txt",
+      "hostlistExclude": "list-exclude.txt",
+      "ipsetExclude": "ipset-exclude.txt",
+      "dpiDesync": "fake",
+      "dpiDesyncRepeats": 6,
+      "dpiDesyncFakeQuic": "quic_initial_www_google_com.bin"
+    },
+    {
+      "filterUdp": "19294-19344,50000-50100",
+      "filterL7": "discord,stun",
+      "dpiDesync": "fake",
+      "dpiDesyncRepeats": 6
+    },
+    {
+      "filterTcp": "2053,2083,2087,2096,8443",
+      "hostlistDomains": "discord.media",
+      "dpiDesync": "fake,hostfakesplit",
+      "dpiDesyncFooling": "ts"
+    },
+    {
+      "filterTcp": "443",
+      "hostlist": "list-google.txt",
+      "ipId": "zero",
+      "dpiDesync": "fake,hostfakesplit",
+      "dpiDesyncFooling": "ts"
+    },
+    {
+      "filterTcp": "80,443",
+      "hostlist": "list-general.txt",
+      "hostlistExclude": "list-exclude.txt",
+      "ipsetExclude": "ipset-exclude.txt",
+      "dpiDesync": "fake,hostfakesplit",
+      "dpiDesyncFooling": "ts"
+    },
+    {
+      "filterUdp": "443",
+      "ipset": "ipset-all.txt",
+      "hostlistExclude": "list-exclude.txt",
+      "ipsetExclude": "ipset-exclude.txt",
+      "dpiDesync": "fake",
+      "dpiDesyncRepeats": 6,
+      "dpiDesyncFakeQuic": "quic_initial_www_google_com.bin"
+    }
+  ]
+}

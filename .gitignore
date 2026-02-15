@@ -1,0 +1,27 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+Thumbs.db
+
+# Build outputs
+out/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Electron
+*.asar
+
+# Package files
+*.exe
+*.dmg
+*.AppImage

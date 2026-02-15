@@ -1,0 +1,56 @@
+{
+  "name": "ooze",
+  "version": "1.0.0",
+  "description": "Advanced DPI circumvention tool with beautiful UI",
+  "main": "dist/main/main.js",
+  "author": "Ooze Team",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.main.json && vite build",
+    "preview": "vite preview",
+    "electron": "electron .",
+    "electron:dev": "set NODE_ENV=development && npm run build && electron .",
+    "package": "npm run build && electron-builder --config electron-builder.json"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.54.0",
+    "@fluentui/react-icons": "^2.0.258",
+    "electron-updater": "^6.3.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3"
+  },
+  "build": {
+    "appId": "com.ooze.app",
+    "productName": "Ooze",
+    "win": {
+      "target": ["nsis"],
+      "icon": "assets/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "configs/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "your-username",
+      "repo": "ooze"
+    }
+  }
+}

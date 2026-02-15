@@ -1,0 +1,37 @@
+{
+  "name": "alt5",
+  "displayName": "ALT5 - Aggressive Mode",
+  "description": "Aggressive mode with syndata and multidisorder (NOT RECOMMENDED)",
+  "rules": [
+    {
+      "filterUdp": "443",
+      "hostlist": "list-general.txt",
+      "hostlistExclude": "list-exclude.txt",
+      "ipsetExclude": "ipset-exclude.txt",
+      "dpiDesync": "fake",
+      "dpiDesyncRepeats": 6,
+      "dpiDesyncFakeQuic": "quic_initial_www_google_com.bin"
+    },
+    {
+      "filterUdp": "19294-19344,50000-50100",
+      "filterL7": "discord,stun",
+      "dpiDesync": "fake",
+      "dpiDesyncRepeats": 6
+    },
+    {
+      "filterTcp": "443,2053,2083,2087,2096,8443",
+      "hostlistExclude": "list-exclude.txt",
+      "ipsetExclude": "ipset-exclude.txt",
+      "dpiDesync": "syndata,multidisorder"
+    },
+    {
+      "filterUdp": "443",
+      "ipset": "ipset-all.txt",
+      "hostlistExclude": "list-exclude.txt",
+      "ipsetExclude": "ipset-exclude.txt",
+      "dpiDesync": "fake",
+      "dpiDesyncRepeats": 6,
+      "dpiDesyncFakeQuic": "quic_initial_www_google_com.bin"
+    }
+  ]
+}
