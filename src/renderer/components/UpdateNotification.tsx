@@ -5,12 +5,14 @@ import { ArrowDownload24Regular, Dismiss24Regular } from '@fluentui/react-icons'
 const useStyles = makeStyles({
   notification: {
     padding: '16px 24px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%)',
+    backdropFilter: 'blur(20px) saturate(180%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: '16px',
-    borderBottom: '1px solid #2a2a2a'
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)'
   },
   content: {
     display: 'flex',
@@ -20,23 +22,32 @@ const useStyles = makeStyles({
   },
   icon: {
     fontSize: '24px',
-    color: '#ffffff'
+    color: '#ffffff',
+    filter: 'drop-shadow(0 2px 10px rgba(102, 126, 234, 0.8))',
+    animation: 'bounce 2s ease-in-out infinite'
   },
   text: {
     fontSize: '14px',
     color: '#ffffff',
-    fontWeight: '500'
+    fontWeight: '500',
+    textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
   },
   actions: {
     display: 'flex',
     gap: '8px'
   },
   button: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    border: 'none',
+    background: 'rgba(255, 255, 255, 0.2)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     color: '#ffffff',
+    fontWeight: '600',
+    borderRadius: '8px',
+    transition: 'all 0.3s',
     '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.3)'
+      background: 'rgba(255, 255, 255, 0.3)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 15px rgba(255, 255, 255, 0.3)'
     }
   },
   dismissButton: {
@@ -73,8 +84,8 @@ const UpdateNotification: React.FC = () => {
         <ArrowDownload24Regular className={styles.icon} />
         <Text className={styles.text}>
           {downloaded 
-            ? 'Update downloaded and ready to install' 
-            : 'New version available! Downloading...'}
+            ? 'Обновление загружено и готово к установке' 
+            : 'Доступна новая версия! Загрузка...'}
         </Text>
       </div>
       
@@ -85,7 +96,7 @@ const UpdateNotification: React.FC = () => {
             onClick={handleInstall}
             className={styles.button}
           >
-            Install & Restart
+            Установить и перезапустить
           </Button>
         )}
         

@@ -5,9 +5,17 @@ import { Settings24Regular, Games24Regular, Database24Regular } from '@fluentui/
 const useStyles = makeStyles({
   card: {
     padding: '24px',
-    backgroundColor: '#242424',
-    border: '1px solid #2a2a2a',
-    borderRadius: '12px'
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '16px',
+    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.08)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 12px 40px 0 rgba(102, 126, 234, 0.4)'
+    }
   },
   header: {
     display: 'flex',
@@ -17,12 +25,14 @@ const useStyles = makeStyles({
   },
   icon: {
     fontSize: '24px',
-    color: '#667eea'
+    color: '#60a5fa',
+    filter: 'drop-shadow(0 2px 10px rgba(96, 165, 250, 0.5))'
   },
   title: {
     fontSize: '18px',
     fontWeight: '600',
-    color: '#ffffff'
+    color: '#ffffff',
+    textShadow: '0 2px 10px rgba(255, 255, 255, 0.3)'
   },
   settingsList: {
     display: 'flex',
@@ -33,34 +43,52 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '16px',
-    backgroundColor: '#1a1a1a',
-    borderRadius: '8px',
-    border: '1px solid #2a2a2a'
+    padding: '14px 16px',
+    background: 'rgba(255, 255, 255, 0.03)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '12px',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    transition: 'all 0.3s',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.06)',
+      borderColor: 'rgba(96, 165, 250, 0.3)',
+      transform: 'translateX(4px)'
+    }
   },
   settingInfo: {
     display: 'flex',
     alignItems: 'center',
-    gap: '12px',
-    flex: 1
+    gap: '10px',
+    flex: 1,
+    minWidth: 0
   },
   settingIcon: {
-    fontSize: '20px',
-    color: '#667eea'
+    fontSize: '18px',
+    color: '#60a5fa',
+    filter: 'drop-shadow(0 2px 8px rgba(96, 165, 250, 0.5))',
+    flexShrink: 0
   },
   settingText: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '4px'
+    gap: '2px',
+    minWidth: 0,
+    flex: 1
   },
   settingName: {
-    fontSize: '14px',
+    fontSize: '13px',
     fontWeight: '600',
-    color: '#ffffff'
+    color: '#ffffff',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
   settingDescription: {
-    fontSize: '12px',
-    color: '#999'
+    fontSize: '11px',
+    color: 'rgba(255, 255, 255, 0.7)',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   }
 });
 
@@ -92,9 +120,9 @@ const SettingsPanel: React.FC = () => {
 
   const getIpsetLabel = () => {
     switch (ipsetMode) {
-      case 'any': return 'Any (All IPs)';
-      case 'loaded': return 'Loaded (From list)';
-      case 'none': return 'None (Disabled)';
+      case 'any': return 'Любой (Все IP)';
+      case 'loaded': return 'Загружен (Из списка)';
+      case 'none': return 'Нет (Отключен)';
     }
   };
 
@@ -102,7 +130,7 @@ const SettingsPanel: React.FC = () => {
     <Card className={styles.card}>
       <div className={styles.header}>
         <Settings24Regular className={styles.icon} />
-        <Text className={styles.title}>Settings</Text>
+        <Text className={styles.title}>Настройки</Text>
       </div>
 
       <div className={styles.settingsList}>
@@ -110,9 +138,9 @@ const SettingsPanel: React.FC = () => {
           <div className={styles.settingInfo}>
             <Games24Regular className={styles.settingIcon} />
             <div className={styles.settingText}>
-              <Text className={styles.settingName}>Game Filter</Text>
+              <Text className={styles.settingName}>Игровой фильтр</Text>
               <Text className={styles.settingDescription}>
-                Enable extended port range (1024-65535) for gaming
+                Порты 1024-65535 для игр
               </Text>
             </div>
           </div>
@@ -123,14 +151,24 @@ const SettingsPanel: React.FC = () => {
           <div className={styles.settingInfo}>
             <Database24Regular className={styles.settingIcon} />
             <div className={styles.settingText}>
-              <Text className={styles.settingName}>IPSet Mode</Text>
+              <Text className={styles.settingName}>Режим IPSet</Text>
               <Text className={styles.settingDescription}>
-                Current: {getIpsetLabel()}
+                {getIpsetLabel()}
               </Text>
             </div>
           </div>
-          <Button appearance="secondary" onClick={handleIpsetToggle}>
-            Switch
+          <Button 
+            appearance="secondary" 
+            onClick={handleIpsetToggle}
+            style={{ 
+              minWidth: '100px',
+              background: 'rgba(96, 165, 250, 0.2)',
+              border: '1px solid rgba(96, 165, 250, 0.3)',
+              color: '#ffffff',
+              borderRadius: '8px'
+            }}
+          >
+            Переключить
           </Button>
         </div>
       </div>

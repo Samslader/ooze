@@ -98,6 +98,10 @@ ipcMain.handle('diagnostics:run', async () => {
   return await serviceManager.runDiagnostics();
 });
 
+ipcMain.handle('diagnostics:runFullTest', async () => {
+  return await serviceManager.runFullTest();
+});
+
 ipcMain.handle('app:minimize', () => {
   mainWindow?.minimize();
 });

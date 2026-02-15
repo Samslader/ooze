@@ -5,9 +5,17 @@ import { Settings24Regular } from '@fluentui/react-icons';
 const useStyles = makeStyles({
   card: {
     padding: '24px',
-    backgroundColor: '#242424',
-    border: '1px solid #2a2a2a',
-    borderRadius: '12px'
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '16px',
+    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.08)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 12px 40px 0 rgba(102, 126, 234, 0.4)'
+    }
   },
   header: {
     display: 'flex',
@@ -17,20 +25,31 @@ const useStyles = makeStyles({
   },
   icon: {
     fontSize: '24px',
-    color: '#667eea'
+    color: '#a78bfa',
+    filter: 'drop-shadow(0 2px 10px rgba(167, 139, 250, 0.5))'
   },
   title: {
     fontSize: '18px',
     fontWeight: '600',
-    color: '#ffffff'
+    color: '#ffffff',
+    textShadow: '0 2px 10px rgba(255, 255, 255, 0.3)'
   },
   description: {
     fontSize: '13px',
-    color: '#999',
+    color: 'rgba(255, 255, 255, 0.7)',
     marginBottom: '16px'
   },
   dropdown: {
-    width: '100%'
+    width: '100%',
+    background: 'rgba(255, 255, 255, 0.08)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    borderRadius: '12px',
+    color: '#ffffff',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.12)',
+      borderColor: 'rgba(167, 139, 250, 0.5)'
+    }
   }
 });
 
@@ -53,37 +72,37 @@ const ConfigSelector: React.FC<ConfigSelectorProps> = ({ selectedConfig, onConfi
   };
 
   const configDescriptions: Record<string, string> = {
-    'general': 'Standard configuration for Discord and YouTube',
-    'alt': 'Alternative method with fake TLS splitting',
-    'alt2': 'Enhanced splitting with different patterns',
-    'alt3': 'Advanced desync with multiple strategies',
-    'fake-tls-auto': 'Automatic fake TLS detection',
-    'simple-fake': 'Simple fake packet injection'
+    'general': 'Стандартная конфигурация для Discord и YouTube',
+    'alt': 'Альтернативный метод с fake TLS разделением',
+    'alt2': 'Улучшенное разделение с другими паттернами',
+    'alt3': 'Продвинутый десинк с несколькими стратегиями',
+    'fake-tls-auto': 'Автоматическое определение fake TLS',
+    'simple-fake': 'Простая инъекция fake пакетов'
   };
 
   return (
     <Card className={styles.card}>
       <div className={styles.header}>
         <Settings24Regular className={styles.icon} />
-        <Text className={styles.title}>Configuration</Text>
+        <Text className={styles.title}>Конфигурация</Text>
       </div>
       
       <Text className={styles.description}>
-        Select a bypass strategy that works best for your ISP
+        Выберите стратегию обхода, которая лучше всего работает для вашего провайдера
       </Text>
 
       <Dropdown
         className={styles.dropdown}
         value={selectedConfig}
         onOptionSelect={(_, data) => onConfigChange(data.optionValue as string)}
-        placeholder="Select configuration"
+        placeholder="Выберите конфигурацию"
       >
-        <Option value="general">General (Recommended)</Option>
+        <Option value="general">General (Рекомендуется)</Option>
         <Option value="alt">ALT - Fake TLS Split</Option>
-        <Option value="alt2">ALT2 - Enhanced Split</Option>
-        <Option value="alt3">ALT3 - Advanced Desync</Option>
-        <Option value="alt4">ALT4 - Multi Strategy</Option>
-        <Option value="alt5">ALT5 - Aggressive Mode</Option>
+        <Option value="alt2">ALT2 - Улучшенное разделение</Option>
+        <Option value="alt3">ALT3 - Продвинутый десинк</Option>
+        <Option value="alt4">ALT4 - Мульти стратегия</Option>
+        <Option value="alt5">ALT5 - Агрессивный режим</Option>
         <Option value="alt6">ALT6 - Split Position 1</Option>
         <Option value="alt7">ALT7 - SNI Extension Split</Option>
         <Option value="alt8">ALT8</Option>

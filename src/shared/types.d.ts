@@ -33,6 +33,7 @@ declare global {
       };
       diagnostics: {
         run: () => Promise<DiagnosticResult[]>;
+        runFullTest: () => Promise<void>;
       };
       app: {
         minimize: () => Promise<void>;

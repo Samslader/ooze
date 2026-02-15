@@ -140,10 +140,10 @@ export class ServiceManager {
       results.push({
         name: 'Base Filtering Engine',
         status: stdout.includes('RUNNING') ? 'ok' : 'error',
-        message: stdout.includes('RUNNING') ? 'Running' : 'Not running'
+        message: stdout.includes('RUNNING') ? 'Запущен' : 'Не запущен'
       });
     } catch {
-      results.push({ name: 'Base Filtering Engine', status: 'error', message: 'Not found' });
+      results.push({ name: 'Base Filtering Engine', status: 'error', message: 'Не найден' });
     }
 
     // TCP Timestamps
@@ -153,10 +153,10 @@ export class ServiceManager {
       results.push({
         name: 'TCP Timestamps',
         status: enabled ? 'ok' : 'warning',
-        message: enabled ? 'Enabled' : 'Disabled'
+        message: enabled ? 'Включены' : 'Отключены'
       });
     } catch {
-      results.push({ name: 'TCP Timestamps', status: 'error', message: 'Check failed' });
+      results.push({ name: 'TCP Timestamps', status: 'error', message: 'Проверка не удалась' });
     }
 
     // Conflicting services
@@ -166,9 +166,9 @@ export class ServiceManager {
         const { stdout } = await execAsync(`tasklist /FI "IMAGENAME eq ${service}.exe"`);
         if (stdout.includes(service)) {
           results.push({
-            name: `${service} Conflict`,
+            name: `Конфликт ${service}`,
             status: 'error',
-            message: 'Conflicting service detected'
+            message: 'Обнаружен конфликтующий сервис'
           });
         }
       } catch {
@@ -177,6 +177,27 @@ export class ServiceManager {
     }
 
     return results;
+  }
+
+  async runFullTest() {
+    try {
+      const testScriptPath = path.join(process.resourcesPath, 'zapret', 'utils', 'test zapret.ps1');
+      
+      // Run PowerShell script in a new window
+      spawn('powershell.exe', [
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
+        '-File', `"${testScriptPath}"`
+      ], {
+        detached: true,
+        stdio: 'ignore',
+        shell: true
+      }).unref();
+
+      return { success: true, message: 'Test started' };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
   }
 
   private buildArgs(configName: string): string[] {

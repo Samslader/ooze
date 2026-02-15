@@ -13,7 +13,8 @@ contextBridge.exposeInMainWorld('electron', {
     get: (name: string) => ipcRenderer.invoke('config:get', name)
   },
   diagnostics: {
-    run: () => ipcRenderer.invoke('diagnostics:run')
+    run: () => ipcRenderer.invoke('diagnostics:run'),
+    runFullTest: () => ipcRenderer.invoke('diagnostics:runFullTest')
   },
   app: {
     minimize: () => ipcRenderer.invoke('app:minimize'),

@@ -10,9 +10,17 @@ import {
 const useStyles = makeStyles({
   card: {
     padding: '24px',
-    backgroundColor: '#242424',
-    border: '1px solid #2a2a2a',
-    borderRadius: '12px'
+    background: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '16px',
+    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.08)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 12px 40px 0 rgba(102, 126, 234, 0.4)'
+    }
   },
   header: {
     display: 'flex',
@@ -27,15 +35,43 @@ const useStyles = makeStyles({
   },
   icon: {
     fontSize: '24px',
-    color: '#667eea'
+    color: '#f472b6',
+    filter: 'drop-shadow(0 2px 10px rgba(244, 114, 182, 0.5))'
   },
   title: {
     fontSize: '18px',
     fontWeight: '600',
-    color: '#ffffff'
+    color: '#ffffff',
+    textShadow: '0 2px 10px rgba(255, 255, 255, 0.3)'
   },
   button: {
-    borderRadius: '8px'
+    borderRadius: '10px',
+    background: 'rgba(244, 114, 182, 0.2)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(244, 114, 182, 0.3)',
+    color: '#ffffff',
+    fontWeight: '600',
+    transition: 'all 0.3s',
+    '&:hover': {
+      background: 'rgba(244, 114, 182, 0.4)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 20px rgba(244, 114, 182, 0.5)'
+    }
+  },
+  testButton: {
+    borderRadius: '10px',
+    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    color: '#ffffff',
+    fontWeight: '600',
+    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.5)',
+    transition: 'all 0.3s',
+    '&:hover': {
+      background: 'linear-gradient(135deg, rgba(102, 126, 234, 1) 0%, rgba(118, 75, 162, 1) 100%)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 8px 30px rgba(102, 126, 234, 0.7)'
+    }
   },
   results: {
     display: 'flex',
@@ -47,13 +83,21 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
-    padding: '12px',
-    backgroundColor: '#1a1a1a',
-    borderRadius: '8px',
-    border: '1px solid #2a2a2a'
+    padding: '16px',
+    background: 'rgba(255, 255, 255, 0.03)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '12px',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    transition: 'all 0.3s',
+    '&:hover': {
+      background: 'rgba(255, 255, 255, 0.06)',
+      borderColor: 'rgba(255, 255, 255, 0.15)',
+      transform: 'translateX(4px)'
+    }
   },
   resultIcon: {
-    fontSize: '20px'
+    fontSize: '20px',
+    filter: 'drop-shadow(0 2px 8px currentColor)'
   },
   resultText: {
     flex: 1,
@@ -68,13 +112,14 @@ const useStyles = makeStyles({
   },
   resultMessage: {
     fontSize: '12px',
-    color: '#999'
+    color: 'rgba(255, 255, 255, 0.7)'
   },
   loading: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '24px'
+    padding: '32px',
+    color: '#a78bfa'
   }
 });
 
@@ -92,6 +137,29 @@ const DiagnosticsPanel: React.FC = () => {
       setResults(diagnostics);
     } catch (error) {
       console.error('Diagnostics failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const runFullTest = async () => {
+    setLoading(true);
+    setResults([]);
+    
+    try {
+      await window.electron.diagnostics.runFullTest();
+      setResults([{
+        name: 'Полный тест',
+        status: 'ok',
+        message: 'Тест запущен в отдельном окне PowerShell. Результаты будут сохранены в zapret/utils/test results/'
+      }]);
+    } catch (error) {
+      console.error('Full test failed:', error);
+      setResults([{
+        name: 'Полный тест',
+        status: 'error',
+        message: 'Не удалось запустить тест'
+      }]);
     } finally {
       setLoading(false);
     }
@@ -115,22 +183,33 @@ const DiagnosticsPanel: React.FC = () => {
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <Stethoscope24Regular className={styles.icon} />
-          <Text className={styles.title}>System Diagnostics</Text>
+          <Text className={styles.title}>Системная диагностика</Text>
         </div>
         
-        <Button
-          appearance="secondary"
-          onClick={runDiagnostics}
-          disabled={loading}
-          className={styles.button}
-        >
-          {loading ? 'Running...' : 'Run Diagnostics'}
-        </Button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button
+            appearance="secondary"
+            onClick={runDiagnostics}
+            disabled={loading}
+            className={styles.button}
+          >
+            {loading ? 'Проверка...' : 'Быстрая проверка'}
+          </Button>
+          
+          <Button
+            appearance="primary"
+            onClick={runFullTest}
+            disabled={loading}
+            className={styles.testButton}
+          >
+            Полный тест конфигов
+          </Button>
+        </div>
       </div>
 
       {loading && (
         <div className={styles.loading}>
-          <Spinner size="medium" label="Checking system..." />
+          <Spinner size="medium" label="Проверка системы..." />
         </div>
       )}
 

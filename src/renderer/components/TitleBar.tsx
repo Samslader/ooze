@@ -5,13 +5,15 @@ import { Subtract20Regular, Square20Regular, Dismiss20Regular } from '@fluentui/
 const useStyles = makeStyles({
   titleBar: {
     height: '40px',
-    backgroundColor: '#0f0f0f',
+    background: 'rgba(15, 12, 41, 0.8)',
+    backdropFilter: 'blur(20px) saturate(180%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0 16px',
     WebkitAppRegion: 'drag' as any,
-    borderBottom: '1px solid #2a2a2a'
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.3)'
   },
   title: {
     fontSize: '13px',
@@ -19,13 +21,15 @@ const useStyles = makeStyles({
     color: '#ffffff',
     display: 'flex',
     alignItems: 'center',
-    gap: '8px'
+    gap: '8px',
+    textShadow: '0 2px 10px rgba(102, 126, 234, 0.5)'
   },
   logo: {
     width: '20px',
     height: '20px',
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    boxShadow: '0 0 20px rgba(102, 126, 234, 0.6)'
   },
   controls: {
     display: 'flex',
@@ -42,14 +46,16 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'background-color 0.2s',
+    transition: 'all 0.2s',
+    borderRadius: '4px',
     '&:hover': {
-      backgroundColor: '#2a2a2a'
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(10px)'
     }
   },
   closeButton: {
     '&:hover': {
-      backgroundColor: '#e81123',
+      backgroundColor: 'rgba(232, 17, 35, 0.8)',
       color: '#ffffff'
     }
   }

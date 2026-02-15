@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    backgroundColor: '#1a1a1a'
+    position: 'relative'
   },
   content: {
     flex: 1,

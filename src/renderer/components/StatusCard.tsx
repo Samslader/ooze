@@ -4,19 +4,42 @@ import { CheckmarkCircle24Regular, DismissCircle24Regular, Warning24Regular } fr
 
 const useStyles = makeStyles({
   card: {
-    padding: '24px',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    border: 'none',
-    borderRadius: '12px'
+    padding: '32px',
+    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)',
+    backdropFilter: 'blur(30px) saturate(180%)',
+    border: '1px solid rgba(255, 255, 255, 0.18)',
+    borderRadius: '20px',
+    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+    position: 'relative',
+    overflow: 'hidden',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    '&:hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: '0 12px 48px 0 rgba(102, 126, 234, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.15)'
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '2px',
+      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent)',
+      animation: 'shimmer 3s infinite'
+    }
   },
   content: {
     display: 'flex',
     alignItems: 'center',
-    gap: '16px'
+    gap: '20px',
+    position: 'relative',
+    zIndex: 1
   },
   icon: {
-    fontSize: '48px',
-    color: '#ffffff'
+    fontSize: '56px',
+    color: '#ffffff',
+    filter: 'drop-shadow(0 4px 20px rgba(102, 126, 234, 0.8))',
+    animation: 'pulse 2s ease-in-out infinite'
   },
   info: {
     flex: 1,
@@ -25,16 +48,40 @@ const useStyles = makeStyles({
     gap: '8px'
   },
   title: {
-    fontSize: '24px',
-    fontWeight: '600',
-    color: '#ffffff'
+    fontSize: '28px',
+    fontWeight: '700',
+    color: '#ffffff',
+    textShadow: '0 2px 20px rgba(102, 126, 234, 0.5)',
+    letterSpacing: '-0.5px'
   },
   subtitle: {
     fontSize: '14px',
-    color: 'rgba(255, 255, 255, 0.8)'
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: '400'
   },
   badge: {
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    padding: '8px 16px',
+    borderRadius: '12px',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    fontWeight: '600',
+    fontSize: '13px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+    animation: 'pulse 2s ease-in-out infinite'
+  },
+  configBadge: {
+    padding: '6px 14px',
+    borderRadius: '10px',
+    background: 'rgba(167, 139, 250, 0.3)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(167, 139, 250, 0.5)',
+    color: '#ffffff',
+    fontSize: '13px',
+    fontWeight: '600',
+    boxShadow: '0 0 20px rgba(167, 139, 250, 0.4)',
+    animation: 'pulse 2s ease-in-out infinite',
+    textShadow: '0 2px 10px rgba(167, 139, 250, 0.8)'
   }
 });
 
@@ -51,7 +98,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ status }) => {
         <div className={styles.content}>
           <Warning24Regular className={styles.icon} />
           <div className={styles.info}>
-            <Text className={styles.title}>Loading...</Text>
+            <Text className={styles.title}>Загрузка...</Text>
           </div>
         </div>
       </Card>
@@ -59,28 +106,29 @@ const StatusCard: React.FC<StatusCardProps> = ({ status }) => {
   }
 
   const getStatusInfo = () => {
-    const configText = status.currentConfig ? ` (${status.currentConfig})` : '';
-    
     if (status.status === 'running') {
       return {
         icon: <CheckmarkCircle24Regular className={styles.icon} />,
-        title: `Service Running${configText}`,
-        subtitle: 'DPI bypass is active and protecting your connection',
-        badge: { color: 'success' as const, text: 'Active' }
+        title: 'Сервис запущен',
+        subtitle: 'DPI обход активен и защищает ваше соединение',
+        badge: { color: 'success' as const, text: 'Активен' },
+        config: status.currentConfig
       };
     } else if (status.status === 'standalone') {
       return {
         icon: <CheckmarkCircle24Regular className={styles.icon} />,
-        title: `Running (Standalone)${configText}`,
-        subtitle: 'Process is running without service installation',
-        badge: { color: 'warning' as const, text: 'Standalone' }
+        title: 'Запущен (Standalone)',
+        subtitle: 'Процесс работает без установки сервиса',
+        badge: { color: 'warning' as const, text: 'Standalone' },
+        config: status.currentConfig
       };
     } else {
       return {
         icon: <DismissCircle24Regular className={styles.icon} />,
-        title: 'Service Stopped',
-        subtitle: 'Click Start to begin DPI bypass',
-        badge: { color: 'danger' as const, text: 'Inactive' }
+        title: 'Сервис остановлен',
+        subtitle: 'Нажмите Запустить для начала обхода DPI',
+        badge: { color: 'danger' as const, text: 'Неактивен' },
+        config: null
       };
     }
   };
@@ -92,7 +140,14 @@ const StatusCard: React.FC<StatusCardProps> = ({ status }) => {
       <div className={styles.content}>
         {statusInfo.icon}
         <div className={styles.info}>
-          <Text className={styles.title}>{statusInfo.title}</Text>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <Text className={styles.title}>{statusInfo.title}</Text>
+            {statusInfo.config && (
+              <div className={styles.configBadge}>
+                {statusInfo.config}
+              </div>
+            )}
+          </div>
           <Text className={styles.subtitle}>{statusInfo.subtitle}</Text>
         </div>
         <Badge 
